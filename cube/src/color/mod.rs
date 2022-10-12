@@ -1,14 +1,61 @@
 pub mod blend;
-pub mod adjust;
+pub mod util;
 #[macro_use]
 mod macros;
 
-#[derive(Default)]
+use glm::{DVec4, IVec4, Primitive, Vector4};
+use num::cast::AsPrimitive;
+use std::convert::{From, Into};
+
+#[derive(Debug, Default, Clone, Copy)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
     pub b: u8,
     pub a: u8,
+}
+
+impl<T> Into<Vector4<T>> for Color
+where
+    T: Primitive + From<u8>,
+{
+    fn into(self) -> Vector4<T> {
+        Vector4 {
+            x: self.r.into(),
+            y: self.g.into(),
+            z: self.b.into(),
+            w: self.a.into(),
+        }
+    }
+}
+
+impl<T> From<Vector4<T>> for Color
+where
+    T: Primitive + Into<f64> + AsPrimitive<u8>,
+{
+    fn from(v: Vector4<T>) -> Self {
+        let x: f64 = v.x.into();
+        let y: f64 = v.y.into();
+        let z: f64 = v.z.into();
+        let w: f64 = v.w.into();
+
+        Color {
+            r: x.round().as_(),
+            g: y.round().as_(),
+            b: z.round().as_(),
+            a: w.round().as_(),
+        }
+    }
+}
+
+impl Color {
+    pub fn to_dvec(self) -> DVec4 {
+        self.into()
+    }
+
+    pub fn to_ivec(self) -> IVec4 {
+        self.into()
+    }
 }
 
 pub const TRANSPARENT: Color = translucent!("00000000");
