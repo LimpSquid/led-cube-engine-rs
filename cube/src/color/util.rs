@@ -1,6 +1,6 @@
 use super::{Color, BLACK, WHITE};
 use crate::math;
-use crate::math::float::FloatCmpExt;
+use crate::math::float::FloatExt;
 
 impl Color {
     pub fn lighter(self, factor: f64) -> Color {

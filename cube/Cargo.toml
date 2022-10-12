@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 glm = "0.2.3"
 hex-literal = "0.3.4"
-num = "0.4.0"
+ieee754 = "0.2.6"
+num-traits = "0.2.15"

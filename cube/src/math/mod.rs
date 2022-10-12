@@ -1,5 +1,4 @@
 pub mod float;
-pub use float::FloatCmpExt;
 
 use std::ops::{Add, Div, Mul, Sub};
 

@@ -4,7 +4,6 @@ pub mod util;
 mod macros;
 
 use glm::{DVec4, IVec4, Primitive, Vector4};
-use num::cast::AsPrimitive;
 use std::convert::{From, Into};
 
 #[derive(Debug, Default, Clone, Copy)]
@@ -31,7 +30,7 @@ where
 
 impl<T> From<Vector4<T>> for Color
 where
-    T: Primitive + Into<f64> + AsPrimitive<u8>,
+    T: Primitive + Into<f64>,
 {
     fn from(v: Vector4<T>) -> Self {
         let x: f64 = v.x.into();
@@ -40,10 +39,10 @@ where
         let w: f64 = v.w.into();
 
         Color {
-            r: x.round().as_(),
-            g: y.round().as_(),
-            b: z.round().as_(),
-            a: w.round().as_(),
+            r: x.round() as u8,
+            g: y.round() as u8,
+            b: z.round() as u8,
+            a: w.round() as u8,
         }
     }
 }
