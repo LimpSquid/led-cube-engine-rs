@@ -17,10 +17,10 @@ impl Color {
         let factor = factor.clamp(0.0, 1.0);
 
         if factor.cmp_lt(0.5) {
-            return self.lighter(math::map(factor, 0.0, 0.5, 0.0, 1.0));
+            return math::map(factor, 0.5, 0.0, self.to_dvec(), BLACK.to_dvec()).into();
         }
         if factor.cmp_gt(0.5) {
-            return self.lighter(math::map(factor, 0.5, 1.0, 0.0, 1.0));
+            return math::map(factor, 0.5, 1.0, self.to_dvec(), WHITE.to_dvec()).into();
         }
         self
     }
