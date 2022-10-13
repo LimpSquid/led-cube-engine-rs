@@ -9,7 +9,7 @@ macro_rules! opaque {
             b: b[2],
             a: u8::MAX,
         }
-    }};
+    }}
 }
 
 #[macro_export]
@@ -23,5 +23,5 @@ macro_rules! translucent {
             b: b[2],
             a: b[3],
         }
-    }};
+    }}
 }

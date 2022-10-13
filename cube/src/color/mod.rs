@@ -3,8 +3,9 @@ pub mod util;
 #[macro_use]
 mod macros;
 
-use glm::{DVec4, IVec4, Primitive, Vector4};
-use std::convert::{From, Into};
+use glm::{Vector4, DVec4, Primitive};
+use crate::interpolate;
+use crate::math::interpolate::Interpolate;
 
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Color {
@@ -47,13 +48,12 @@ where
     }
 }
 
-impl Color {
-    pub fn to_dvec(self) -> DVec4 {
-        self.into()
-    }
+impl Interpolate for Color {
+    fn compute(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self {
+        let y_start: DVec4 = y_start.into();
+        let y_end: DVec4 = y_end.into();
 
-    pub fn to_ivec(self) -> IVec4 {
-        self.into()
+        interpolate!(x, x_start, x_end, y_start, y_end).into()
     }
 }
 

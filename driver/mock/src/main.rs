@@ -1,10 +1,8 @@
-use cube::color::{RED};
+use cube::color::{WHITE, BLACK};
+use cube::math;
 
 fn main() {
-    println!("Hello, world from mock!");
+    let c = math::map(0.1, 0.0, 1.0, BLACK, WHITE);
 
-    let x = RED;
-    let y = x.adjust_brightness(0.8);
-
-    println!("{:?}, {:?}", x, y);
+    println!("{:?}", c);
 }

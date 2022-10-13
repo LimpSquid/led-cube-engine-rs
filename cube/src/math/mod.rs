@@ -1,6 +1,7 @@
 pub mod float;
+pub mod interpolate;
 
-use std::ops::{Add, Div, Mul, Sub};
+use self::interpolate::Interpolate;
 
 pub fn map<TIn, TOut>(
     value: TIn,
@@ -10,14 +11,12 @@ pub fn map<TIn, TOut>(
     to_end: TOut,
 ) -> TOut
 where
-    TIn: Copy + Sub<Output = TIn>,
-    TOut: Copy
-        + Add<Output = TOut>
-        + Sub<Output = TOut>
-        + Mul<TIn, Output = TOut>
-        + Div<TIn, Output = TOut>,
+    TIn: Copy + Into<f64>,
+    TOut: Interpolate
 {
-    to_start + (to_end - to_start) * (value - from_start) / (from_end - from_start)
+    Interpolate::compute(value.into(),
+        from_start.into(), from_end.into(),
+        to_start, to_end)
 }
 
 // @TODO: add test
