@@ -14,7 +14,7 @@ where
     TIn: Copy + Into<f64>,
     TOut: Interpolate
 {
-    Interpolate::compute(value.into(),
+    TOut::interpolate(value.into(),
         from_start.into(), from_end.into(),
         to_start, to_end)
 }

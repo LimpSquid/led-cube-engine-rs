@@ -2,7 +2,7 @@ pub trait Interpolate
 where
     Self: Copy
 {
-    fn compute(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self;
+    fn interpolate(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self;
 }
 
 #[macro_export]
@@ -16,7 +16,7 @@ macro_rules! impl_interpolate {
     ($($t: ty),+) => {
         $(
             impl Interpolate for $t {
-                fn compute(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self {
+                fn interpolate(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self {
                     let y_start: f64 = y_start.into();
                     let y_end: f64 = y_end.into();
                     interpolate!(x, x_start, x_end, y_start, y_end) as $t

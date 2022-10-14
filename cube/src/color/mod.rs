@@ -49,7 +49,7 @@ where
 }
 
 impl Interpolate for Color {
-    fn compute(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self {
+    fn interpolate(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self {
         let y_start: DVec4 = y_start.into();
         let y_end: DVec4 = y_end.into();
 
