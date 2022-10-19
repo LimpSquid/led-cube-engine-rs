@@ -1,7 +1,7 @@
 use super::Color;
 
 impl Color {
-    pub fn alpha_blend_into<T: Into<Color>>(self, bucket: T)-> Self {
+    pub fn alpha_blend_into<T: Into<Color>>(self, bucket: T) -> Self {
         let bucket: Color = bucket.into();
         let alpha: u32 = self.a.into();
         let inv_alpha: u32 = (u8::MAX - self.a).into();

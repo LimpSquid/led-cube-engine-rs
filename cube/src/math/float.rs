@@ -8,10 +8,10 @@ where
     fn safe_eq(self, rhs: Self) -> bool {
         // We need this check here since inf.next() or inf.prev() is not a number
         if self.is_infinite() && rhs.is_infinite() {
-            return self == rhs; // inf != -inf
+            self == rhs // inf != -inf
+        } else {
+            self.prev() <= rhs && self.next() >= rhs
         }
-
-        self.prev() <= rhs && self.next() >= rhs
     }
 
     fn safe_lt(self, rhs: Self) -> bool {
@@ -32,12 +32,12 @@ where
 
     fn safe_clamp(self, min: Self, max: Self) -> Self {
         if self.safe_le(min) {
-            return min
+            min
+        } else if self.safe_ge(max) {
+            max
+        } else {
+            self
         }
-        if self.safe_ge(max) {
-            return max
-        }
-        self
     }
 }
 
