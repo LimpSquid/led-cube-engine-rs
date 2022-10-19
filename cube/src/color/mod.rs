@@ -4,10 +4,11 @@ pub mod util;
 mod macros;
 
 use glm::{Vector4, DVec4, Primitive};
+use lazy_static::lazy_static;
 use crate::interpolate;
 use crate::math::interpolate::Interpolate;
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub struct Color {
     pub r: u8,
     pub g: u8,
@@ -29,9 +30,8 @@ impl From<u32> for Color {
         Color {
             r: (rgba >> 24) as u8,
             g: (rgba >> 16) as u8,
-            b: (rgba >>  9) as u8,
+            b: (rgba >>  8) as u8,
             a: (rgba      ) as u8,
-
         }
     }
 }
@@ -78,30 +78,38 @@ impl Interpolate for Color {
     }
 }
 
-// TODO: generate some sort of hashmap/LUT?
+// TODO: move to separate file?
+macro_rules! count {
+    () => (0usize);
+    ($x:tt $($xs:tt)*) => (1usize + count!($($xs)*));
+}
+
 macro_rules! impl_named_colors {
-    ($($name:ident => $macro:ident $value:literal),+) => {
-        $(
-            pub const $name: Color = $macro!($value);
-        )+
+    ($($name:ident = $color:expr),+) => {
+        lazy_static! {
+            static ref COLORS: [(String, Color); count!($($name)+)] = [
+                $((String::from(stringify!($name)).to_lowercase(), $name),)+
+            ];
+        }
+        $(pub const $name: Color = $color;)+
     }
 }
 
 impl_named_colors!
 {
     // Translucent colors
-    TRANSPARENT => translucent  "00000000",
+    TRANSPARENT = translucent!("00000000"),
 
     // Opaque colors
-    BLACK       => opaque       "000000",
-    WHITE       => opaque       "ffffff",
-    RED         => opaque       "ff0000",
-    GREEN       => opaque       "00ff00",
-    BLUE        => opaque       "0000ff",
-    CYAN        => opaque       "00ffff",
-    MAGENTA     => opaque       "ff00ff",
-    YELLOW      => opaque       "ffff00",
-    ORANGE      => opaque       "ff8000",
-    PINK        => opaque       "ff60ff",
-    STEEL_BLUE  => opaque       "468bb4"
+    BLACK       = opaque!("000000"),
+    WHITE       = opaque!("ffffff"),
+    RED         = opaque!("ff0000"),
+    GREEN       = opaque!("00ff00"),
+    BLUE        = opaque!("0000ff"),
+    CYAN        = opaque!("00ffff"),
+    MAGENTA     = opaque!("ff00ff"),
+    YELLOW      = opaque!("ffff00"),
+    ORANGE      = opaque!("ff8000"),
+    PINK        = opaque!("ff60ff"),
+    STEEL_BLUE  = opaque!("468bb4")
 }
