@@ -1,8 +1,8 @@
 use cube::color::{WHITE, BLACK};
-use cube::math;
 
 fn main() {
-    let c = math::map(0.1, 0.0, 1.0, BLACK, WHITE);
-
-    println!("{:?}", c);
+    let c1 = WHITE.translucent(0.5);
+    let c2 = BLACK.translucent(0.5);
+    let c3 = c1.blend_into(c2);
+    println!("{:?}", c3);
 }

@@ -13,7 +13,7 @@ macro_rules! interpolate {
 }
 
 macro_rules! impl_interpolate {
-    ($($t: ty),+) => {
+    ($($t:ty),+) => {
         $(
             impl Interpolate for $t {
                 fn interpolate(x: f64, x_start: f64, x_end: f64, y_start: Self, y_end: Self) -> Self {

@@ -15,9 +15,30 @@ pub struct Color {
     pub a: u8,
 }
 
+impl Into<u32> for Color {
+    fn into(self) -> u32 {
+        (self.r as u32) << 24 |
+        (self.g as u32) << 16 |
+        (self.b as u32) <<  8 |
+        (self.a as u32)
+    }
+}
+
+impl From<u32> for Color {
+    fn from(rgba: u32) -> Self {
+        Color {
+            r: (rgba >> 24) as u8,
+            g: (rgba >> 16) as u8,
+            b: (rgba >>  9) as u8,
+            a: (rgba      ) as u8,
+
+        }
+    }
+}
+
 impl<T> Into<Vector4<T>> for Color
 where
-    T: Primitive + From<u8>,
+    T: Copy + Primitive + From<u8>,
 {
     fn into(self) -> Vector4<T> {
         Vector4 {
@@ -31,7 +52,7 @@ where
 
 impl<T> From<Vector4<T>> for Color
 where
-    T: Primitive + Into<f64>,
+    T: Copy + Primitive + Into<f64>,
 {
     fn from(v: Vector4<T>) -> Self {
         let x: f64 = v.x.into();
@@ -57,15 +78,30 @@ impl Interpolate for Color {
     }
 }
 
-pub const TRANSPARENT: Color = translucent!("00000000");
-pub const BLACK: Color = opaque!("000000");
-pub const WHITE: Color = opaque!("ffffff");
-pub const RED: Color = opaque!("ff0000");
-pub const GREEN: Color = opaque!("00ff00");
-pub const BLUE: Color = opaque!("0000ff");
-pub const CYAN: Color = opaque!("00ffff");
-pub const MAGENTA: Color = opaque!("ff00ff");
-pub const YELLOW: Color = opaque!("ffff00");
-pub const ORANGE: Color = opaque!("ff8000");
-pub const PINK: Color = opaque!("ff60ff");
-pub const STEEL_BLUE: Color = opaque!("468bb4");
+// TODO: generate some sort of hashmap/LUT?
+macro_rules! impl_named_colors {
+    ($($name:ident => $macro:ident $value:literal),+) => {
+        $(
+            pub const $name: Color = $macro!($value);
+        )+
+    }
+}
+
+impl_named_colors!
+{
+    // Translucent colors
+    TRANSPARENT => translucent  "00000000",
+
+    // Opaque colors
+    BLACK       => opaque       "000000",
+    WHITE       => opaque       "ffffff",
+    RED         => opaque       "ff0000",
+    GREEN       => opaque       "00ff00",
+    BLUE        => opaque       "0000ff",
+    CYAN        => opaque       "00ffff",
+    MAGENTA     => opaque       "ff00ff",
+    YELLOW      => opaque       "ffff00",
+    ORANGE      => opaque       "ff8000",
+    PINK        => opaque       "ff60ff",
+    STEEL_BLUE  => opaque       "468bb4"
+}
