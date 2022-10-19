@@ -1,4 +1,4 @@
-use super::{Color, COLORS, BLACK, WHITE};
+use super::{Color, NAMED_COLORS, BLACK, WHITE};
 use crate::math;
 use crate::math::float::FloatExt;
 
@@ -67,7 +67,7 @@ impl Color {
                 .map(|v| v.into())
                 .map_err(|e| e.to_string())
         } else {
-            COLORS.iter()
+            NAMED_COLORS.iter()
                 .find(|t| t.0 == src)
                 .map(|t| t.1)
                 .ok_or(String::from(format!("unknown color '{}'", src)))

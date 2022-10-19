@@ -87,7 +87,7 @@ macro_rules! count {
 macro_rules! impl_named_colors {
     ($($name:ident = $color:expr),+) => {
         lazy_static! {
-            static ref COLORS: [(String, Color); count!($($name)+)] = [
+            static ref NAMED_COLORS: [(String, Color); count!($($name)+)] = [
                 $((String::from(stringify!($name)).to_lowercase(), $name),)+
             ];
         }
